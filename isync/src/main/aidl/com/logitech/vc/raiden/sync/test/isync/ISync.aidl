@@ -8,8 +8,4 @@ interface ISync {
    void registerClient(String clientId, ISyncCallback callback);
 
    void unregisterClient(String clientId);
-
-   byte[] sendMessage(String clientId, String messageId, in byte[] message);
-
-   oneway void sendMessageAsync(String clientId, in byte[] message);
 }

@@ -1,1 +1,1 @@
-include ':app', ':isync'
+include ':app', ':isync', ':demoapp'

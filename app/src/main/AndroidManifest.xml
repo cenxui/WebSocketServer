@@ -19,6 +19,9 @@
                 android:name=".SyncTestService"
                 android:enabled="true"
                 android:exported="true">
+            <intent-filter>
+                <action android:name="com.logitech.vc.raiden.sync.test.app.SyncTestService"/>
+            </intent-filter>
         </service>
 
         <receiver

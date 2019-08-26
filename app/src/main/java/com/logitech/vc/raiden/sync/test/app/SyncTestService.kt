@@ -8,10 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.logitech.vc.raiden.sync.test.isync.ISync
+import com.logitech.vc.raiden.sync.test.isync.ISyncCallback
 
 class SyncTestService : Service() {
 
     private val TAG = SyncTestService::class.java.name
+
+    private lateinit var iSyncCallback: ISyncCallback
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val channel = NotificationChannel(
@@ -30,7 +34,7 @@ class SyncTestService : Service() {
 
         startForeground(BuildConfig.NOTIFICATION_ID, notification)
 
-        val port = 8887 // 843 flash policy port
+        val port = 8888 // 843 flash policy port
         val s = Server(port, this)
         s.start()
         Log.d(TAG, "Server started on port: " + s.port)
@@ -39,6 +43,17 @@ class SyncTestService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+
+        return binder
+    }
+
+    private val binder = object : ISync.Stub() {
+        override fun registerClient(clientId: String?, callback: ISyncCallback) {
+            iSyncCallback = callback
+        }
+
+        override fun unregisterClient(clientId: String) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
     }
 }

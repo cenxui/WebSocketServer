@@ -1,7 +1,7 @@
 package com.logitech.vc.raiden.sync.test.app
 
-import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import org.java_websocket.WebSocket
 import org.java_websocket.handshake.ClientHandshake
@@ -9,12 +9,17 @@ import org.java_websocket.server.WebSocketServer
 
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
+import android.content.ComponentName
+
+
 
 /**
  * A simple WebSocketServer implementation. Keeps track of a "chatroom".
  */
 
 class Server(port: Int, private val context: Context)  : WebSocketServer(InetSocketAddress(port)) {
+    private val demoapp = "com.logitech.vc.raiden.sync.test.demoapp"
+    private val demoappAcitivity = "com.logitech.vc.raiden.sync.test.demoapp.MainActivity"
 
     override fun onOpen(conn: WebSocket, handshake: ClientHandshake) {
         conn.send("Welcome to the server!") //This method sends a message to the new client
@@ -33,6 +38,12 @@ class Server(port: Int, private val context: Context)  : WebSocketServer(InetSoc
         broadcast(message)
         println("$conn: $message")
         toast(message)
+
+        val it = Intent(Intent.ACTION_VIEW)
+        context.packageManager.getLaunchIntentForPackage(demoapp)
+        it.setComponent(ComponentName(demoapp, demoappAcitivity))
+        it.flags = Intent. FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(it)
     }
 
     override fun onMessage(conn: WebSocket?, message: ByteBuffer?) {

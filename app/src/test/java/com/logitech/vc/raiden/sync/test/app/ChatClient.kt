@@ -45,7 +45,7 @@ class ChatClient : WebSocketClient {
         @JvmStatic
         fun main(args: Array<String>) {
             val c =
-                ChatClient(URI("ws://10.200.248.0:8887")) // more about drafts here: http://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
+                ChatClient(URI("ws://10.200.248.0:8888")) // more about drafts here: http://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
             c.connect()
             val sysin = BufferedReader(InputStreamReader(System.`in`))
             while (true) {
