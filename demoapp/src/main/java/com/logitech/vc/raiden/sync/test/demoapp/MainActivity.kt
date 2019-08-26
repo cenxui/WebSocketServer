@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import com.logitech.vc.raiden.sync.test.isync.ISync
+import com.logitech.vc.raiden.sync.test.isync.ISyncCallback
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,7 +32,12 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             // Following the example above for an AIDL interface,
             // this gets an instance of the IRemoteInterface, which we can use to call on the service
-            iSync = ISync.Stub.asInterface(service)
+            val iSync = ISync.Stub.asInterface(service)
+            iSync.registerClient("camera", object : ISyncCallback.Stub() {
+                override fun onMessage(message: String) :String {
+                    return "camera : $message"
+                }
+            })
         }
 
         // Called when the connection with the service disconnects unexpectedly

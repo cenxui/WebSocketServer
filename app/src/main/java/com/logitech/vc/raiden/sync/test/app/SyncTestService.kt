@@ -15,9 +15,10 @@ class SyncTestService : Service() {
 
     private val TAG = SyncTestService::class.java.name
 
-    private lateinit var iSyncCallback: ISyncCallback
+    private lateinit var server :Server
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
         val channel = NotificationChannel(
             this.javaClass.name,
             BuildConfig.NOTIFICATION_NAME,
@@ -35,9 +36,9 @@ class SyncTestService : Service() {
         startForeground(BuildConfig.NOTIFICATION_ID, notification)
 
         val port = 8888 // 843 flash policy port
-        val s = Server(port, this)
-        s.start()
-        Log.d(TAG, "Server started on port: " + s.port)
+        server = Server(port, this)
+        server.start()
+        Log.d(TAG, "Server started on port: " + server.port)
         Log.d(TAG, "Service onStartCommand called.")
         return START_STICKY
     }
@@ -49,10 +50,14 @@ class SyncTestService : Service() {
 
     private val binder = object : ISync.Stub() {
         override fun registerClient(clientId: String?, callback: ISyncCallback) {
-            iSyncCallback = callback
+            server.callback = callback
         }
 
         override fun unregisterClient(clientId: String) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
+        override fun sendMessage(message: String?) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
     }

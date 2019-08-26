@@ -8,4 +8,6 @@ interface ISync {
    void registerClient(String clientId, ISyncCallback callback);
 
    void unregisterClient(String clientId);
+
+   void sendMessage(String message);
 }
